@@ -1,20 +1,26 @@
 package rs.ac.ni.pmf.game_engine.classes;
 
+
+import rs.ac.ni.pmf.game_engine.R;
 import android.os.Bundle;
 import android.app.Activity;
 import android.content.Context;
+import android.graphics.Color;
 import android.support.v4.view.GestureDetectorCompat;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
+import android.view.SurfaceView;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.LinearLayout;
 
 public class GameActivity extends Activity implements GestureDetector.OnGestureListener, GestureDetector.OnDoubleTapListener {
 
 	private GameSurface _gameSurface;
 	private GestureDetectorCompat _gDetector;
+	private LinearLayout _score;
 
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -23,9 +29,11 @@ public class GameActivity extends Activity implements GestureDetector.OnGestureL
 
 		getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
-		_gameSurface = new GameSurface(this, 480, 800);
-		setContentView(_gameSurface);
-
+		
+		setContentView(R.layout.activity_main);
+		_gameSurface = (GameSurface) findViewById(R.id.screen);
+		_score = (LinearLayout) findViewById(R.id.linearLayout1);
+		_score.setBackgroundColor(Color.BLACK);
 		_gDetector = new GestureDetectorCompat(this, this);
 		_gDetector.setOnDoubleTapListener(this);
 
@@ -86,9 +94,6 @@ public class GameActivity extends Activity implements GestureDetector.OnGestureL
 	@Override
 	public boolean onScroll(MotionEvent e1, MotionEvent e2, float distanceX, float distanceY) {
 		_gameSurface.move((int) distanceX, (int) distanceY);
-//		_gameSurface.set_xOffset((int) distanceX);
-//		_gameSurface.set_yOffset((int) distanceY);
-		// Log.d("TOUCH", "SKROLL YEAA " + distanceX + " " + distanceY);
 		return true;
 	}
 

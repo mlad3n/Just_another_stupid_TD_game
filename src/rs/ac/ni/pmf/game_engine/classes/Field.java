@@ -12,6 +12,7 @@ import android.graphics.Canvas;
  */
 public abstract class Field {
 
+	//komentar
 	private int _fieldState;
 	protected Bitmap[] _sprites;
 	

@@ -1,10 +1,12 @@
 package rs.ac.ni.pmf.game_engine.classes;
 
 import android.content.Context;
+import android.util.AttributeSet;
+import android.util.Log;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 
-public class GameSurface extends SurfaceView implements SurfaceHolder.Callback {
+ public class GameSurface extends SurfaceView implements SurfaceHolder.Callback {
 
 	private GameThread _thread;
 	private int _xOffset = 0, _yOffset = 0;
@@ -12,21 +14,34 @@ public class GameSurface extends SurfaceView implements SurfaceHolder.Callback {
 	private int _screenWidth = 0;
 	private int _screenHeight = 0;
 
-	public GameSurface(Context context, int screenWidth, int screenHeight) {
-		super(context);
+	public GameSurface(Context context, AttributeSet attrs, int defStyle) {
+		super(context, attrs, defStyle);
 		getHolder().addCallback(this);
-		_screenWidth = screenWidth;
-		_screenHeight = screenHeight;
 		_thread = new GameThread(getHolder(), this);
 		setFocusable(true);
 	}
 
-	//@Override
-	//protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
-	//	_screenWidth = MeasureSpec.getSize(widthMeasureSpec);
-	//	_screenHeight = MeasureSpec.getSize(heightMeasureSpec);
-	//	super.onMeasure(widthMeasureSpec, heightMeasureSpec);
-	//}
+	public GameSurface(Context context, AttributeSet attrs) {
+		super(context, attrs);
+		getHolder().addCallback(this);
+		_thread = new GameThread(getHolder(), this);
+		setFocusable(true);
+	}
+
+	public GameSurface(Context context) {
+		super(context);
+		getHolder().addCallback(this);
+		_thread = new GameThread(getHolder(), this);
+		setFocusable(true);
+	}
+
+	@Override
+	protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
+		_screenWidth = MeasureSpec.getSize(widthMeasureSpec);
+		_screenHeight = MeasureSpec.getSize(heightMeasureSpec);
+		this.setMeasuredDimension(_screenWidth, _screenHeight);
+		Log.d("TAG", _screenWidth + " " + _screenHeight  );
+	}
 
 	public int get_sizeX() {
 		return _mapSizeX;
@@ -53,7 +68,6 @@ public class GameSurface extends SurfaceView implements SurfaceHolder.Callback {
 	public void surfaceCreated(SurfaceHolder holder) {
 		// at this point the surface is created and
 		// we can safely start the game loop
-		onMeasure(500, 500);
 		_thread.setRunning(true);
 		_thread.start();
 	}
